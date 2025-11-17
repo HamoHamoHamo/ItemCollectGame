@@ -8,29 +8,53 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private float jumpForce = 5.0f;
 
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.25f;
+    [SerializeField] private LayerMask groundLayer;
+    private bool isGrounded = true;
+
     private float hAxis;
     private float vAxis;
+    private bool jDown;
 
     private Vector3 moveVec;
-
     private Animator anim;
+    private Rigidbody rb;
 
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         HandleInput();
-        Move();
         
+
+    }
+
+    private void FixedUpdate() 
+    {
+        UpdateGroundCheck();
+    }
+
+    private void UpdateGroundCheck()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+        anim.SetBool("isGrounded", isGrounded);
     }
 
     private void HandleInput()
     {
         hAxis = Input.GetAxis("Horizontal");
         vAxis = Input.GetAxis("Vertical");
+        Move();
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Jump();
+        }
     }
 
     private void Move()
@@ -43,4 +67,17 @@ public class PlayerMovement : MonoBehaviour
 
         transform.LookAt(transform.position + moveVec);
     }
+
+    private void Jump()
+    {
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        anim.SetTrigger("doJump");
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(groundCheck.position, groundCheckRadius);
+    }
+
 }
