@@ -61,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
     {
         moveVec = new Vector3(hAxis, 0.0f, vAxis).normalized;
         transform.position += moveVec * moveSpeed * Time.deltaTime;
-        Debug.Log(moveVec);
 
         anim.SetBool("isRun", moveVec != Vector3.zero);
 
