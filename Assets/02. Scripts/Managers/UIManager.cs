@@ -23,7 +23,6 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Debug.Log($"UIManager Awake - ID: {GetInstanceID()}");
     }
 
     private void OnDestroy()
@@ -34,9 +33,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"UIManager Start - ID: {GetInstanceID()}");
         gameManager = GameManager.Instance;
-        Debug.Log($"GameManager ID: {gameManager.GetInstanceID()}");
         
         SubscribeToEvents();
         SetupUI();
@@ -70,7 +67,6 @@ public class UIManager : MonoBehaviour
     {
         if (gameManager != null)
         {
-            Debug.Log("이벤트 구독 중...");
             gameManager.OnItemCountChanged += UpdateItemCountUI;
             gameManager.OnTimeUpdated += UpdateTimerUI;
             gameManager.OnGameEnd += ShowGameEndPanel;
@@ -93,7 +89,6 @@ public class UIManager : MonoBehaviour
 
     private void UpdateItemCountUI(int current, int target)
     {
-        Debug.Log($"UI 업데이트: {current} / {target}");
         if (itemCountText != null)
         {
             itemCountText.text = $"{current} / {target}";
@@ -139,7 +134,6 @@ public class UIManager : MonoBehaviour
 
     private void OnRestartButtonClicked()
     {
-        Debug.Log("Restart 버튼 클릭");
         gameManager.RestartGame();
     }
 

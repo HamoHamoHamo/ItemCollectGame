@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : GenericSingleton<GameManager>
 {
-    private int targetItemCount = 5;
+    [SerializeField] private int targetItemCount = 10;
 
     private int currentItemCount = 0;
     private float gameTime = 0f;

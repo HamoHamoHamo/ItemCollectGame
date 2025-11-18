@@ -30,7 +30,6 @@ public class Item : MonoBehaviour
         {
             // 풀에서 이펙트 가져오기
             ItemEffect effect = PoolManager.Instance.GetFromPool(itemEffectPrefab);
-            Debug.Log("Spawned ItemEffect from pool.");
             if (effect != null)
             {
                 effect.transform.SetPositionAndRotation(transform.position, Quaternion.identity);

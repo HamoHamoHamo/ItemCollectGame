@@ -20,6 +20,8 @@ public class ItemSpawner : MonoBehaviour
     [Header("Height Settings")]
     [SerializeField] private float spawnHeight = 1.0f;
 
+    private GameManager gameManager;
+
     private void Awake()
     {
         SetupObjectPool();
@@ -27,6 +29,7 @@ public class ItemSpawner : MonoBehaviour
 
     private void Start()
     {
+        gameManager = GameManager.Instance;
         SpawnInitialItems();
         StartCoroutine(SpawnRoutine());
     }
@@ -55,7 +58,7 @@ public class ItemSpawner : MonoBehaviour
     private IEnumerator SpawnRoutine()
     {
         WaitForSeconds wait = new WaitForSeconds(spawnInterval);
-        while (true)
+        while (gameManager.IsGameActive)
         {
             yield return wait;
             SpawnItem();
@@ -74,9 +77,8 @@ public class ItemSpawner : MonoBehaviour
 
         Vector3 randomPosition = GetRandomSpawnPosition();
 
-        item.transform.position = randomPosition;
-        item.transform.rotation = Quaternion.identity;
-        item.gameObject.SetActive(true);
+        item.transform.SetPositionAndRotation(randomPosition, Quaternion.identity);
+
     }
 
     private Vector3 GetRandomSpawnPosition()
